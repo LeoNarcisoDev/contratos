@@ -15,7 +15,7 @@ def fill_contract(data):
             if placeholder in para.text:
                 para.text = para.text.replace(placeholder, str(value))
 
-    # Substituir em tabelas
+    # Substituir em tabelas (se houver)
     for table in doc.tables:
         for row in table.rows:
             for cell in row.cells:
@@ -25,7 +25,6 @@ def fill_contract(data):
                         if placeholder in para.text:
                             para.text = para.text.replace(placeholder, str(value))
 
-    # Salvar arquivo preenchido
     output_path = os.path.join(app.root_path, 'temp_filled_contract.docx')
     doc.save(output_path)
     return output_path
@@ -36,7 +35,7 @@ def form():
 
 @app.route('/submit_contract', methods=['POST'])
 def submit_contract():
-    # Data atual no formato "Belo Horizonte, 09 de abril de 2025"
+    # Geração de data formatada
     hoje = datetime.today()
     meses = {
         '01': 'janeiro', '02': 'fevereiro', '03': 'março', '04': 'abril',
@@ -48,7 +47,7 @@ def submit_contract():
     ano = hoje.strftime('%Y')
     data_contrato_formatada = f'Belo Horizonte, {dia} de {mes} de {ano}'
 
-    # Coletar dados do formulário
+    # Coleta de dados do formulário
     data = {
         'nome_aluno': request.form.get('nome_aluno', ''),
         'cpf_aluno': request.form.get('cpf_aluno', ''),
@@ -74,7 +73,6 @@ def submit_contract():
         'data_contrato': data_contrato_formatada
     }
 
-    # Preencher e salvar o contrato
     docx_path = fill_contract(data)
     return send_file(docx_path, as_attachment=True)
 
