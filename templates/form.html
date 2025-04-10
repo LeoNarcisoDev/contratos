@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+    <meta charset="UTF-8">
+    <title>Formulário de Contrato</title>
+</head>
+<body>
+    <h1>Preencha os dados do contrato</h1>
+    <form action="/submit_contract" method="post">
+        <label>Nome:</label>
+        <input type="text" name="nome_aluno" required><br>
+
+        <label>CPF:</label>
+        <input type="text" name="cpf_aluno" required><br>
+
+        <label>Endereço:</label>
+        <input type="text" name="end_aluno" required><br>
+
+        <label>Bairro:</label>
+        <input type="text" name="bairro_aluno" required><br>
+
+        <label>CEP:</label>
+        <input type="text" name="cep_aluno" required><br>
+
+        <label>Cidade/UF:</label>
+        <input type="text" name="cidade_aluno" required><br>
+
+        <label>Celular:</label>
+        <input type="text" name="tel_aluno" required><br>
+
+        <label>E-mail:</label>
+        <input type="email" name="email_aluno" required><br>
+
+        <label>Forma de Pagamento:</label>
+        <input type="text" name="forma_de_pagamento" required><br>
+
+        <label>Total de cada parcela:</label>
+        <input type="text" name="parcela_cartao" required><br>
+
+        <label>Total do contrato (R$):</label>
+        <input type="text" name="total_contrato" required><br>
+
+        <label>Curso:</label>
+        <input type="text" name="curso" required><br>
+
+        <label>Carga horária:</label>
+        <input type="text" name="carga_horaria" required><br>
+
+        <label>Dia início:</label>
+        <input type="text" name="dia_inicio" required><br>
+
+        <label>Mês início:</label>
+        <input type="text" name="mes_inicio" required><br>
+
+        <label>Ano início:</label>
+        <input type="text" name="ano_inicio" required><br>
+
+        <label>Dia término:</label>
+        <input type="text" name="dia_termino" required><br>
+
+        <label>Mês término:</label>
+        <input type="text" name="mes_termino" required><br>
+
+        <label>Ano término:</label>
+        <input type="text" name="ano_termino" required><br>
+
+        <label>Dia(s) da semana das aulas:</label>
+        <input type="text" name="dia_semana" required><br>
+
+        <br>
+        <button type="submit">Gerar Contrato</button>
+    </form>
+</body>
+</html>
