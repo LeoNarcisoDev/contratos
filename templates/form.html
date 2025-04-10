@@ -1,74 +1,112 @@
 <!DOCTYPE html>
-<html lang="pt">
+<html lang="pt-br">
 <head>
     <meta charset="UTF-8">
-    <title>Formulário de Contrato</title>
+    <title>Gerador de Contrato</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <!-- Bootstrap CDN -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
 </head>
-<body>
-    <h1>Preencha os dados do contrato</h1>
-    <form action="/submit_contract" method="post">
-        <label>Nome:</label>
-        <input type="text" name="nome_aluno" required><br>
+<body class="bg-light">
+    <div class="container py-5">
+        <h2 class="mb-4 text-center">Preenchimento do Contrato</h2>
+        <form action="/submit_contract" method="post" class="row g-3">
+            <!-- Dados pessoais -->
+            <div class="col-md-6">
+                <label for="nome_aluno" class="form-label">Nome</label>
+                <input type="text" class="form-control" name="nome_aluno" required>
+            </div>
+            <div class="col-md-6">
+                <label for="cpf_aluno" class="form-label">CPF</label>
+                <input type="text" class="form-control" name="cpf_aluno" required>
+            </div>
+            <div class="col-md-6">
+                <label for="end_aluno" class="form-label">Endereço</label>
+                <input type="text" class="form-control" name="end_aluno" required>
+            </div>
+            <div class="col-md-3">
+                <label for="bairro_aluno" class="form-label">Bairro</label>
+                <input type="text" class="form-control" name="bairro_aluno" required>
+            </div>
+            <div class="col-md-3">
+                <label for="cep_aluno" class="form-label">CEP</label>
+                <input type="text" class="form-control" name="cep_aluno" required>
+            </div>
+            <div class="col-md-6">
+                <label for="cidade_aluno" class="form-label">Cidade/UF</label>
+                <input type="text" class="form-control" name="cidade_aluno" required>
+            </div>
+            <div class="col-md-6">
+                <label for="tel_aluno" class="form-label">Celular</label>
+                <input type="text" class="form-control" name="tel_aluno" required>
+            </div>
+            <div class="col-md-12">
+                <label for="email_aluno" class="form-label">E-mail</label>
+                <input type="email" class="form-control" name="email_aluno" required>
+            </div>
 
-        <label>CPF:</label>
-        <input type="text" name="cpf_aluno" required><br>
+            <!-- Pagamento -->
+            <div class="col-md-4">
+                <label for="forma_de_pagamento" class="form-label">Forma de Pagamento</label>
+                <input type="text" class="form-control" name="forma_de_pagamento" required>
+            </div>
+            <div class="col-md-4">
+                <label for="parcela_cartao" class="form-label">Total de cada parcela</label>
+                <input type="text" class="form-control" name="parcela_cartao" required>
+            </div>
+            <div class="col-md-4">
+                <label for="total_contrato" class="form-label">Total do Contrato (R$)</label>
+                <input type="text" class="form-control" name="total_contrato" required>
+            </div>
 
-        <label>Endereço:</label>
-        <input type="text" name="end_aluno" required><br>
+            <!-- Curso -->
+            <div class="col-md-6">
+                <label for="curso" class="form-label">Curso</label>
+                <input type="text" class="form-control" name="curso" required>
+            </div>
+            <div class="col-md-6">
+                <label for="carga_horaria" class="form-label">Carga horária</label>
+                <input type="text" class="form-control" name="carga_horaria" required>
+            </div>
 
-        <label>Bairro:</label>
-        <input type="text" name="bairro_aluno" required><br>
+            <!-- Datas -->
+            <div class="col-md-4">
+                <label for="dia_inicio" class="form-label">Dia início</label>
+                <input type="text" class="form-control" name="dia_inicio" required>
+            </div>
+            <div class="col-md-4">
+                <label for="mes_inicio" class="form-label">Mês início</label>
+                <input type="text" class="form-control" name="mes_inicio" required>
+            </div>
+            <div class="col-md-4">
+                <label for="ano_inicio" class="form-label">Ano início</label>
+                <input type="text" class="form-control" name="ano_inicio" required>
+            </div>
+            <div class="col-md-4">
+                <label for="dia_termino" class="form-label">Dia término</label>
+                <input type="text" class="form-control" name="dia_termino" required>
+            </div>
+            <div class="col-md-4">
+                <label for="mes_termino" class="form-label">Mês término</label>
+                <input type="text" class="form-control" name="mes_termino" required>
+            </div>
+            <div class="col-md-4">
+                <label for="ano_termino" class="form-label">Ano término</label>
+                <input type="text" class="form-control" name="ano_termino" required>
+            </div>
 
-        <label>CEP:</label>
-        <input type="text" name="cep_aluno" required><br>
+            <div class="col-md-6">
+                <label for="dia_semana" class="form-label">Dias da semana</label>
+                <input type="text" class="form-control" name="dia_semana" required>
+            </div>
 
-        <label>Cidade/UF:</label>
-        <input type="text" name="cidade_aluno" required><br>
+            <div class="col-12 text-center pt-3">
+                <button type="submit" class="btn btn-primary btn-lg">Gerar Contrato</button>
+            </div>
+        </form>
+    </div>
 
-        <label>Celular:</label>
-        <input type="text" name="tel_aluno" required><br>
-
-        <label>E-mail:</label>
-        <input type="email" name="email_aluno" required><br>
-
-        <label>Forma de Pagamento:</label>
-        <input type="text" name="forma_de_pagamento" required><br>
-
-        <label>Total de cada parcela:</label>
-        <input type="text" name="parcela_cartao" required><br>
-
-        <label>Total do contrato (R$):</label>
-        <input type="text" name="total_contrato" required><br>
-
-        <label>Curso:</label>
-        <input type="text" name="curso" required><br>
-
-        <label>Carga horária:</label>
-        <input type="text" name="carga_horaria" required><br>
-
-        <label>Dia início:</label>
-        <input type="text" name="dia_inicio" required><br>
-
-        <label>Mês início:</label>
-        <input type="text" name="mes_inicio" required><br>
-
-        <label>Ano início:</label>
-        <input type="text" name="ano_inicio" required><br>
-
-        <label>Dia término:</label>
-        <input type="text" name="dia_termino" required><br>
-
-        <label>Mês término:</label>
-        <input type="text" name="mes_termino" required><br>
-
-        <label>Ano término:</label>
-        <input type="text" name="ano_termino" required><br>
-
-        <label>Dia(s) da semana das aulas:</label>
-        <input type="text" name="dia_semana" required><br>
-
-        <br>
-        <button type="submit">Gerar Contrato</button>
-    </form>
+    <!-- Bootstrap Bundle JS (opcional, para interações JS do Bootstrap) -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>
