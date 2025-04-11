@@ -153,6 +153,54 @@ def upload_alunos():
 
     return render_template('alunos_csv.html', mensagem=mensagem)
 
+@app.route('/modelos', methods=['GET', 'POST'])
+def gerenciar_modelos():
+    mensagem = ''
+    if request.method == 'POST':
+        arquivo = request.files.get('arquivo')
+        descricao = request.form.get('descricao')
+        categoria = request.form.get('categoria')
+
+        if arquivo and arquivo.filename.endswith('.docx'):
+            caminho = os.path.join(app.config['UPLOAD_FOLDER'], arquivo.filename)
+            arquivo.save(caminho)
+
+            conn = sqlite3.connect(DB_PATH)
+            cur = conn.cursor()
+            cur.execute('INSERT INTO modelos (nome, descricao, categoria) VALUES (?, ?, ?)',
+                        (arquivo.filename, descricao, categoria))
+            conn.commit()
+            conn.close()
+            mensagem = 'Modelo enviado com sucesso!'
+        else:
+            mensagem = 'Envie um arquivo .docx válido.'
+
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute('SELECT id, nome, descricao, categoria FROM modelos ORDER BY descricao')
+    modelos = cur.fetchall()
+    conn.close()
+
+    return render_template('modelos.html', modelos=modelos, mensagem=mensagem)
+
+@app.route('/excluir_modelo/<int:modelo_id>')
+def excluir_modelo(modelo_id):
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute('SELECT nome FROM modelos WHERE id = ?', (modelo_id,))
+    resultado = cur.fetchone()
+
+    if resultado:
+        nome_arquivo = resultado[0]
+        caminho_arquivo = os.path.join(app.config['UPLOAD_FOLDER'], nome_arquivo)
+        if os.path.exists(caminho_arquivo):
+            os.remove(caminho_arquivo)
+        cur.execute('DELETE FROM modelos WHERE id = ?', (modelo_id,))
+        conn.commit()
+
+    conn.close()
+    return redirect('/modelos')
+
 if __name__ == '__main__':
     init_db()
     app.run(debug=True)
