@@ -12,6 +12,7 @@
   <div class="d-flex justify-content-between mb-4">
     <a href="/cursos" class="btn btn-outline-primary">Gerenciar Cursos</a>
     <a href="/modelos" class="btn btn-outline-secondary">Gerenciar Modelos</a>
+    <a href="/alunos_csv" class="btn btn-outline-success">Importar Alunos CSV</a>
   </div>
 
   <form action="/submit_contract" method="post" class="row g-3">
@@ -35,12 +36,9 @@
 
     <div class="col-md-6"><label class="form-label">Nome</label><input type="text" class="form-control" name="nome_aluno" required></div>
     <div class="col-md-6"><label class="form-label">CPF</label><input type="text" class="form-control" name="cpf_aluno" required></div>
-    <div class="col-md-6"><label class="form-label">Endereço</label><input type="text" class="form-control" name="end_aluno" required></div>
-    <div class="col-md-3"><label class="form-label">Bairro</label><input type="text" class="form-control" name="bairro_aluno" required></div>
-    <div class="col-md-3"><label class="form-label">CEP</label><input type="text" class="form-control" name="cep_aluno" required></div>
-    <div class="col-md-6"><label class="form-label">Cidade/UF</label><input type="text" class="form-control" name="cidade_aluno" required></div>
+    <div class="col-md-12"><label class="form-label">Endereço</label><input type="text" class="form-control" name="end_aluno" required></div>
     <div class="col-md-6"><label class="form-label">Celular</label><input type="text" class="form-control" name="tel_aluno" required></div>
-    <div class="col-md-12"><label class="form-label">E-mail</label><input type="email" class="form-control" name="email_aluno" required></div>
+    <div class="col-md-6"><label class="form-label">E-mail</label><input type="email" class="form-control" name="email_aluno" required></div>
 
     <div class="col-md-4">
       <label class="form-label">Forma de Pagamento</label>
@@ -62,7 +60,6 @@
     <div class="col-md-4">
       <label class="form-label">Mês início</label>
       <select name="mes_inicio" class="form-select" required>
-        <option value="">Selecione</option>
         {% for mes in ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'] %}
           <option value="{{ mes }}">{{ mes }}</option>
         {% endfor %}
@@ -74,7 +71,6 @@
     <div class="col-md-4">
       <label class="form-label">Mês término</label>
       <select name="mes_termino" class="form-select" required>
-        <option value="">Selecione</option>
         {% for mes in ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'] %}
           <option value="{{ mes }}">{{ mes }}</option>
         {% endfor %}
@@ -90,5 +86,39 @@
     </div>
   </form>
 </div>
+
+<script>
+  let alunos = [];
+
+  fetch('/static/alunos.json')
+    .then(res => res.json())
+    .then(data => {
+      alunos = data;
+      const nomeInput = document.querySelector('input[name=nome_aluno]');
+      const cpfInput = document.querySelector('input[name=cpf_aluno]');
+      const emailInput = document.querySelector('input[name=email_aluno]');
+      const telInput = document.querySelector('input[name=tel_aluno]');
+      const endInput = document.querySelector('input[name=end_aluno]');
+      const cursoInput = document.querySelector('select[name=curso]');
+
+      nomeInput.addEventListener('input', () => {
+        const texto = nomeInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
+        const encontrado = alunos.find(a => a.nome.toLowerCase().includes(texto));
+        if (encontrado) {
+          nomeInput.value = encontrado.nome;
+          cpfInput.value = encontrado.cpf;
+          emailInput.value = encontrado.email;
+          telInput.value = encontrado.tel_aluno;
+          endInput.value = encontrado.endereco;
+
+          [...cursoInput.options].forEach(opt => {
+            if (opt.value.toLowerCase() === encontrado.curso.toLowerCase()) {
+              cursoInput.value = opt.value;
+            }
+          });
+        }
+      });
+    });
+</script>
 </body>
 </html>
