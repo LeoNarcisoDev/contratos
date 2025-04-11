@@ -7,23 +7,23 @@
 </head>
 <body class="bg-light">
 <div class="container py-5">
-  <h2 class="mb-4 text-center">Cadastro de Cursos</h2>
+  <h2 class="text-center mb-4">Cadastro de Cursos</h2>
 
   {% if mensagem %}
     <div class="alert alert-info text-center">{{ mensagem }}</div>
   {% endif %}
 
-  <form method="POST" class="row g-3 mb-4">
+  <form method="POST" class="row g-3 mb-5">
     <div class="col-md-10">
-      <input type="text" name="nome" class="form-control" placeholder="Nome do curso" required>
+      <input type="text" name="novo_curso" class="form-control" placeholder="Nome do novo curso" required>
     </div>
     <div class="col-md-2">
-      <button type="submit" class="btn btn-success w-100">Adicionar</button>
+      <button type="submit" class="btn btn-primary w-100">Cadastrar</button>
     </div>
   </form>
 
   <h4>Cursos cadastrados</h4>
-  <table class="table table-striped">
+  <table class="table table-bordered">
     <thead class="table-dark">
       <tr>
         <th>Nome</th>
@@ -32,12 +32,12 @@
     </thead>
     <tbody>
       {% for id, nome in cursos %}
-        <tr>
-          <td>{{ nome }}</td>
-          <td>
-            <a href="/excluir_curso/{{ id }}" class="btn btn-danger btn-sm" onclick="return confirm('Excluir este curso?')">Excluir</a>
-          </td>
-        </tr>
+      <tr>
+        <td>{{ nome }}</td>
+        <td class="text-center">
+          <a href="/excluir_curso/{{ id }}" class="btn btn-danger btn-sm" onclick="return confirm('Excluir este curso?')">Excluir</a>
+        </td>
+      </tr>
       {% endfor %}
     </tbody>
   </table>

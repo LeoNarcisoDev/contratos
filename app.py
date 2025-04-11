@@ -66,10 +66,8 @@ def get_cursos():
 def form():
     cursos = get_cursos()
     modelos = get_modelos()
-
     if os.path.exists('data/alunos.json'):
         shutil.copyfile('data/alunos.json', 'static/alunos.json')
-
     return render_template('form.html', cursos=cursos, modelos=modelos)
 
 @app.route('/submit_contract', methods=['POST'])
@@ -86,7 +84,6 @@ def submit_contract():
     data_contrato_formatada = f'Belo Horizonte, {dia} de {mes} de {ano}'
 
     modelo = request.form.get('modelo', '')
-
     data = {key: request.form.get(key, '') for key in request.form}
     data['data_contrato'] = data_contrato_formatada
     data['contratante'] = data['nome_aluno']
@@ -127,7 +124,6 @@ def upload_alunos():
             try:
                 df = pd.read_csv(arquivo, encoding='utf-8', sep=',')
                 df.columns = [col.strip().lower() for col in df.columns]
-
                 alunos = []
                 for _, row in df.iterrows():
                     aluno = {
@@ -150,7 +146,6 @@ def upload_alunos():
                 mensagem = f'Erro no processamento: {str(e)}'
         else:
             mensagem = 'Apenas arquivos CSV são aceitos.'
-
     return render_template('alunos_csv.html', mensagem=mensagem)
 
 @app.route('/modelos', methods=['GET', 'POST'])
@@ -200,6 +195,36 @@ def excluir_modelo(modelo_id):
 
     conn.close()
     return redirect('/modelos')
+
+@app.route('/cursos', methods=['GET', 'POST'])
+def gerenciar_cursos():
+    mensagem = ''
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+
+    if request.method == 'POST':
+        novo = request.form.get('novo_curso', '').strip()
+        if novo:
+            try:
+                cur.execute('INSERT INTO cursos (nome) VALUES (?)', (novo,))
+                conn.commit()
+                mensagem = 'Curso cadastrado com sucesso!'
+            except sqlite3.IntegrityError:
+                mensagem = 'Este curso já está cadastrado.'
+
+    cur.execute('SELECT id, nome FROM cursos ORDER BY nome')
+    cursos = cur.fetchall()
+    conn.close()
+    return render_template('cursos.html', cursos=cursos, mensagem=mensagem)
+
+@app.route('/excluir_curso/<int:curso_id>')
+def excluir_curso(curso_id):
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute('DELETE FROM cursos WHERE id = ?', (curso_id,))
+    conn.commit()
+    conn.close()
+    return redirect('/cursos')
 
 if __name__ == '__main__':
     init_db()
