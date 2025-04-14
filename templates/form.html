@@ -56,30 +56,39 @@
 
     <div class="col-md-6"><label class="form-label">Carga horária</label><input type="text" class="form-control" name="carga_horaria" required></div>
 
-    <div class="col-md-4"><label class="form-label">Dia início</label><input type="text" class="form-control" name="dia_inicio" required></div>
-    <div class="col-md-4">
-      <label class="form-label">Mês início</label>
-      <select name="mes_inicio" class="form-select" required>
-        {% for mes in ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'] %}
-          <option value="{{ mes }}">{{ mes }}</option>
-        {% endfor %}
-      </select>
+    <!-- Início do Curso -->
+    <div class="col-12">
+      <label class="form-label">Início do Curso</label>
+      <div class="row g-2">
+        <div class="col-md-4"><input type="text" class="form-control" name="dia_inicio" placeholder="Dia" required></div>
+        <div class="col-md-4">
+          <select name="mes_inicio" class="form-select" required>
+            <option value="">Mês</option>
+            {% for mes in ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'] %}
+              <option value="{{ mes }}">{{ mes }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-4"><input type="text" class="form-control" name="ano_inicio" placeholder="Ano" required></div>
+      </div>
     </div>
-    <div class="col-md-4"><label class="form-label">Ano início</label><input type="text" class="form-control" name="ano_inicio" required></div>
 
-    <div class="col-md-4"><label class="form-label">Dia término</label><input type="text" class="form-control" name="dia_termino" required></div>
-    <div class="col-md-4">
-      <label class="form-label">Mês término</label>
-      <select name="mes_termino" class="form-select" required>
-        {% for mes in ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'] %}
-          <option value="{{ mes }}">{{ mes }}</option>
-        {% endfor %}
-      </select>
+    <!-- Término do Curso -->
+    <div class="col-12 mt-3">
+      <label class="form-label">Término do Curso</label>
+      <div class="row g-2">
+        <div class="col-md-4"><input type="text" class="form-control" name="dia_termino" placeholder="Dia" required></div>
+        <div class="col-md-4">
+          <select name="mes_termino" class="form-select" required>
+            <option value="">Mês</option>
+            {% for mes in ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'] %}
+              <option value="{{ mes }}">{{ mes }}</option>
+            {% endfor %}
+          </select>
+        </div>
+        <div class="col-md-4"><input type="text" class="form-control" name="ano_termino" placeholder="Ano" required></div>
+      </div>
     </div>
-    <div class="col-md-4"><label class="form-label">Ano término</label><input type="text" class="form-control" name="ano_termino" required></div>
-
-    <div class="col-md-6"><label class="form-label">Dia da semana (1)</label><input type="text" class="form-control" name="dia_semana1" required></div>
-    <div class="col-md-6"><label class="form-label">Dia da semana (2)</label><input type="text" class="form-control" name="dia_semana2" required></div>
 
     <div class="col-12 text-center pt-3">
       <button type="submit" class="btn btn-primary btn-lg">Gerar Contrato</button>

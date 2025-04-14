@@ -1,5 +1,4 @@
 from flask import Flask, render_template, request, redirect, send_file
-from docx import Document
 from datetime import datetime
 import sqlite3
 import os
@@ -8,59 +7,12 @@ from unidecode import unidecode
 import json
 import shutil
 
+from config import UPLOAD_FOLDER, DB_PATH
+from utils.db import init_db, get_modelos, get_cursos
+from utils.docx_handler import fill_contract
+
 app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = os.path.join(app.root_path, 'modelos')
-os.makedirs(app.config['UPLOAD_FOLDER'], exist_ok=True)
-os.makedirs(os.path.join(app.root_path, 'data'), exist_ok=True)
-os.makedirs(os.path.join(app.root_path, 'static'), exist_ok=True)
-
-DB_PATH = os.path.join(app.root_path, 'data', 'contratos.db')
-
-def init_db():
-    conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
-    cur.execute('''
-        CREATE TABLE IF NOT EXISTS cursos (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nome TEXT NOT NULL UNIQUE
-        )
-    ''')
-    cur.execute('''
-        CREATE TABLE IF NOT EXISTS contratos (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nome_aluno TEXT,
-            curso TEXT,
-            forma_pagamento TEXT,
-            data_criacao TEXT,
-            modelo_utilizado TEXT
-        )
-    ''')
-    cur.execute('''
-        CREATE TABLE IF NOT EXISTS modelos (
-            id INTEGER PRIMARY KEY AUTOINCREMENT,
-            nome TEXT NOT NULL,
-            descricao TEXT,
-            categoria TEXT
-        )
-    ''')
-    conn.commit()
-    conn.close()
-
-def get_modelos():
-    conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
-    cur.execute("SELECT id, nome, descricao, categoria FROM modelos ORDER BY descricao")
-    modelos = cur.fetchall()
-    conn.close()
-    return modelos
-
-def get_cursos():
-    conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
-    cur.execute("SELECT nome FROM cursos ORDER BY nome ASC")
-    cursos = [row[0] for row in cur.fetchall()]
-    conn.close()
-    return cursos
+app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/')
 def form():
@@ -89,31 +41,24 @@ def submit_contract():
     data['contratante'] = data['nome_aluno']
     data['modelo'] = modelo
 
+    # Salvar contrato no banco
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute('''
+        INSERT INTO contratos (nome_aluno, curso, forma_pagamento, data_criacao, modelo_utilizado)
+        VALUES (?, ?, ?, ?, ?)
+    ''', (
+        data['nome_aluno'],
+        data['curso'],
+        data['forma_de_pagamento'],
+        datetime.today().strftime('%Y-%m-%d %H:%M:%S'),
+        data['modelo']
+    ))
+    conn.commit()
+    conn.close()
+
     docx_path = fill_contract(data, modelo)
     return send_file(docx_path, as_attachment=True)
-
-def fill_contract(data, modelo_nome):
-    caminho_modelo = os.path.join(app.config['UPLOAD_FOLDER'], modelo_nome)
-    doc = Document(caminho_modelo)
-
-    for para in doc.paragraphs:
-        for key, value in data.items():
-            placeholder = f'{{{{{key}}}}}'
-            if placeholder in para.text:
-                para.text = para.text.replace(placeholder, str(value))
-
-    for table in doc.tables:
-        for row in table.rows:
-            for cell in row.cells:
-                for para in cell.paragraphs:
-                    for key, value in data.items():
-                        placeholder = f'{{{{{key}}}}}'
-                        if placeholder in para.text:
-                            para.text = para.text.replace(placeholder, str(value))
-
-    output_path = os.path.join(app.root_path, 'temp_filled_contract.docx')
-    doc.save(output_path)
-    return output_path
 
 @app.route('/alunos_csv', methods=['GET', 'POST'])
 def upload_alunos():
@@ -138,8 +83,23 @@ def upload_alunos():
                     }
                     alunos.append(aluno)
 
+                # Salva em JSON (para autocomplete)
                 with open('data/alunos.json', 'w', encoding='utf-8') as f:
                     json.dump(alunos, f, ensure_ascii=False, indent=2)
+
+                # Salvar no banco de dados sem duplicar por CPF
+                conn = sqlite3.connect(DB_PATH)
+                cur = conn.cursor()
+                for aluno in alunos:
+                    cur.execute('SELECT id FROM alunos WHERE cpf = ?', (aluno['cpf'],))
+                    if not cur.fetchone():
+                        cur.execute('''
+                            INSERT INTO alunos (nome, cpf, email, tel_aluno, endereco, curso)
+                            VALUES (?, ?, ?, ?, ?, ?)
+                        ''', (aluno['nome'], aluno['cpf'], aluno['email'], aluno['tel_aluno'], aluno['endereco'],
+                              aluno['curso']))
+                conn.commit()
+                conn.close()
 
                 mensagem = 'Alunos importados com sucesso!'
             except Exception as e:
@@ -225,6 +185,67 @@ def excluir_curso(curso_id):
     conn.commit()
     conn.close()
     return redirect('/cursos')
+
+@app.route('/alunos')
+def listar_alunos():
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute('SELECT nome, cpf, email, tel_aluno, endereco, curso FROM alunos ORDER BY nome')
+    alunos = cur.fetchall()
+    conn.close()
+    return render_template('alunos.html', alunos=alunos)
+
+@app.route('/historico', methods=['GET'])
+def historico():
+    filtro = request.args.get('filtro', '').lower().strip()
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+
+    if filtro:
+        cur.execute('''
+            SELECT nome_aluno, curso, forma_pagamento, data_criacao, modelo_utilizado
+            FROM contratos
+            WHERE lower(nome_aluno) LIKE ? OR lower(curso) LIKE ? OR lower(modelo_utilizado) LIKE ?
+            ORDER BY data_criacao DESC
+        ''', (f'%{filtro}%', f'%{filtro}%', f'%{filtro}%'))
+    else:
+        cur.execute('''
+            SELECT nome_aluno, curso, forma_pagamento, data_criacao, modelo_utilizado
+            FROM contratos
+            ORDER BY data_criacao DESC
+        ''')
+    contratos = cur.fetchall()
+    conn.close()
+    return render_template('historico.html', contratos=contratos)
+
+@app.route('/exportar_historico')
+def exportar_historico():
+    filtro = request.args.get('filtro', '').lower().strip()
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+
+    if filtro:
+        cur.execute('''
+            SELECT nome_aluno, curso, forma_pagamento, data_criacao, modelo_utilizado
+            FROM contratos
+            WHERE lower(nome_aluno) LIKE ? OR lower(curso) LIKE ? OR lower(modelo_utilizado) LIKE ?
+            ORDER BY data_criacao DESC
+        ''', (f'%{filtro}%', f'%{filtro}%', f'%{filtro}%'))
+    else:
+        cur.execute('''
+            SELECT nome_aluno, curso, forma_pagamento, data_criacao, modelo_utilizado
+            FROM contratos
+            ORDER BY data_criacao DESC
+        ''')
+    contratos = cur.fetchall()
+    conn.close()
+
+    df = pd.DataFrame(contratos, columns=["Aluno", "Curso", "Forma de Pagamento", "Data", "Modelo"])
+    caminho = os.path.join("temp", "historico_exportado.csv")
+    df.to_csv(caminho, index=False, encoding="utf-8-sig")
+
+    return send_file(caminho, as_attachment=True)
+
 
 if __name__ == '__main__':
     init_db()
