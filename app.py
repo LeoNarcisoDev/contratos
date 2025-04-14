@@ -11,9 +11,20 @@ from config import UPLOAD_FOLDER, DB_PATH
 from utils.db import init_db, get_modelos, get_cursos
 from utils.docx_handler import fill_contract
 
+# Inicializa o app Flask
 app = Flask(__name__)
-app.secret_key = 'segredo_super_seguro'
+
+# Chave secreta para manter sessões consistentes entre requisições
+app.secret_key = 'sua_chave_super_segura_aqui_987!@#Ideal'
+
+# Configurações de cookies para sessões persistentes em HTTPS e iframe
+app.config['SESSION_COOKIE_SECURE'] = True        # obrigatório para HTTPS
+app.config['SESSION_COOKIE_SAMESITE'] = 'None'    # necessário para iframe ou domínio cruzado
+app.config['SESSION_COOKIE_HTTPONLY'] = True      # aumenta a segurança (recomendado)
+
+# Define a pasta de upload
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+
 
 @app.route('/')
 def form():
