@@ -1,12 +1,13 @@
+# utils/db.py
 import sqlite3
 from config import DB_PATH
+from werkzeug.security import generate_password_hash
 
 def init_db():
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
 
-
-    # Cursos
+    # Tabela de cursos
     cur.execute('''
         CREATE TABLE IF NOT EXISTS cursos (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -14,7 +15,7 @@ def init_db():
         )
     ''')
 
-    # Contratos
+    # Tabela de contratos
     cur.execute('''
         CREATE TABLE IF NOT EXISTS contratos (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -26,7 +27,7 @@ def init_db():
         )
     ''')
 
-    # Modelos
+    # Tabela de modelos
     cur.execute('''
         CREATE TABLE IF NOT EXISTS modelos (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -36,7 +37,7 @@ def init_db():
         )
     ''')
 
-    # Alunos
+    # Tabela de alunos
     cur.execute('''
         CREATE TABLE IF NOT EXISTS alunos (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -49,7 +50,7 @@ def init_db():
         )
     ''')
 
-    # Usuários (login)
+    # Tabela de usuarios
     cur.execute('''
         CREATE TABLE IF NOT EXISTS usuarios (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
@@ -58,14 +59,14 @@ def init_db():
         )
     ''')
 
-    # Admin padrão (usuario: admin / senha: admin)
-    cur.execute("SELECT * FROM usuarios WHERE username = 'admin'")
+    # Cria admin padrao se nao existir
+    cur.execute("SELECT * FROM usuarios WHERE username = 'LeoNarciso'")
     if not cur.fetchone():
-        cur.execute("INSERT INTO usuarios (username, senha) VALUES (?, ?)", ('admin', 'admin'))
+        senha_hash = generate_password_hash('Crfmg19309@2025')
+        cur.execute("INSERT INTO usuarios (username, senha) VALUES (?, ?)", ('LeoNarciso', senha_hash))
 
     conn.commit()
     conn.close()
-
 
 def get_modelos():
     conn = sqlite3.connect(DB_PATH)
