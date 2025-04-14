@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, redirect, send_file
+from flask import Flask, render_template, request, redirect, send_file, session, url_for
 from datetime import datetime
 import sqlite3
 import os
@@ -12,15 +12,20 @@ from utils.db import init_db, get_modelos, get_cursos
 from utils.docx_handler import fill_contract
 
 app = Flask(__name__)
+app.secret_key = 'segredo_super_seguro'
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/')
 def form():
+    if 'usuario' not in session:
+        return redirect('/login')
+
     cursos = get_cursos()
     modelos = get_modelos()
     if os.path.exists('data/alunos.json'):
         shutil.copyfile('data/alunos.json', 'static/alunos.json')
     return render_template('form.html', cursos=cursos, modelos=modelos)
+
 
 @app.route('/submit_contract', methods=['POST'])
 def submit_contract():
@@ -62,6 +67,9 @@ def submit_contract():
 
 @app.route('/alunos_csv', methods=['GET', 'POST'])
 def upload_alunos():
+    if 'usuario' not in session:
+        return redirect('/login')
+
     mensagem = ''
     if request.method == 'POST':
         arquivo = request.files.get('arquivo')
@@ -83,11 +91,10 @@ def upload_alunos():
                     }
                     alunos.append(aluno)
 
-                # Salva em JSON (para autocomplete)
                 with open('data/alunos.json', 'w', encoding='utf-8') as f:
                     json.dump(alunos, f, ensure_ascii=False, indent=2)
 
-                # Salvar no banco de dados sem duplicar por CPF
+                # Salvar no banco sem duplicar por CPF
                 conn = sqlite3.connect(DB_PATH)
                 cur = conn.cursor()
                 for aluno in alunos:
@@ -96,8 +103,7 @@ def upload_alunos():
                         cur.execute('''
                             INSERT INTO alunos (nome, cpf, email, tel_aluno, endereco, curso)
                             VALUES (?, ?, ?, ?, ?, ?)
-                        ''', (aluno['nome'], aluno['cpf'], aluno['email'], aluno['tel_aluno'], aluno['endereco'],
-                              aluno['curso']))
+                        ''', (aluno['nome'], aluno['cpf'], aluno['email'], aluno['tel_aluno'], aluno['endereco'], aluno['curso']))
                 conn.commit()
                 conn.close()
 
@@ -110,6 +116,9 @@ def upload_alunos():
 
 @app.route('/modelos', methods=['GET', 'POST'])
 def gerenciar_modelos():
+    if 'usuario' not in session:
+        return redirect('/login')
+
     mensagem = ''
     if request.method == 'POST':
         arquivo = request.files.get('arquivo')
@@ -140,6 +149,9 @@ def gerenciar_modelos():
 
 @app.route('/excluir_modelo/<int:modelo_id>')
 def excluir_modelo(modelo_id):
+    if 'usuario' not in session:
+        return redirect('/login')
+
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
     cur.execute('SELECT nome FROM modelos WHERE id = ?', (modelo_id,))
@@ -158,6 +170,9 @@ def excluir_modelo(modelo_id):
 
 @app.route('/cursos', methods=['GET', 'POST'])
 def gerenciar_cursos():
+    if 'usuario' not in session:
+        return redirect('/login')
+
     mensagem = ''
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
@@ -179,6 +194,9 @@ def gerenciar_cursos():
 
 @app.route('/excluir_curso/<int:curso_id>')
 def excluir_curso(curso_id):
+    if 'usuario' not in session:
+        return redirect('/login')
+
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
     cur.execute('DELETE FROM cursos WHERE id = ?', (curso_id,))
@@ -188,6 +206,9 @@ def excluir_curso(curso_id):
 
 @app.route('/alunos')
 def listar_alunos():
+    if 'usuario' not in session:
+        return redirect('/login')
+
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
     cur.execute('SELECT nome, cpf, email, tel_aluno, endereco, curso FROM alunos ORDER BY nome')
@@ -195,8 +216,11 @@ def listar_alunos():
     conn.close()
     return render_template('alunos.html', alunos=alunos)
 
-@app.route('/historico', methods=['GET'])
+@app.route('/historico')
 def historico():
+    if 'usuario' not in session:
+        return redirect('/login')
+
     filtro = request.args.get('filtro', '').lower().strip()
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
@@ -220,6 +244,9 @@ def historico():
 
 @app.route('/exportar_historico')
 def exportar_historico():
+    if 'usuario' not in session:
+        return redirect('/login')
+
     filtro = request.args.get('filtro', '').lower().strip()
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
@@ -246,6 +273,31 @@ def exportar_historico():
 
     return send_file(caminho, as_attachment=True)
 
+@app.route('/login', methods=['GET', 'POST'])
+def login():
+    erro = ''
+    if request.method == 'POST':
+        username = request.form.get('username')
+        senha = request.form.get('senha')
+
+        conn = sqlite3.connect(DB_PATH)
+        cur = conn.cursor()
+        cur.execute('SELECT * FROM usuarios WHERE username = ? AND senha = ?', (username, senha))
+        usuario = cur.fetchone()
+        conn.close()
+
+        if usuario:
+            session['usuario'] = username
+            return redirect('/')
+        else:
+            erro = 'Usuário ou senha inválidos.'
+
+    return render_template('login.html', erro=erro)
+
+@app.route('/logout')
+def logout():
+    session.pop('usuario', None)
+    return redirect('/login')
 
 if __name__ == '__main__':
     init_db()

@@ -5,6 +5,7 @@ def init_db():
     conn = sqlite3.connect(DB_PATH)
     cur = conn.cursor()
 
+
     # Cursos
     cur.execute('''
         CREATE TABLE IF NOT EXISTS cursos (
@@ -47,6 +48,20 @@ def init_db():
             curso TEXT
         )
     ''')
+
+    # Usuários (login)
+    cur.execute('''
+        CREATE TABLE IF NOT EXISTS usuarios (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            username TEXT UNIQUE NOT NULL,
+            senha TEXT NOT NULL
+        )
+    ''')
+
+    # Admin padrão (usuario: admin / senha: admin)
+    cur.execute("SELECT * FROM usuarios WHERE username = 'admin'")
+    if not cur.fetchone():
+        cur.execute("INSERT INTO usuarios (username, senha) VALUES (?, ?)", ('admin', 'admin'))
 
     conn.commit()
     conn.close()
