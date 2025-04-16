@@ -75,7 +75,7 @@
 
     <!-- Término do Curso -->
     <div class="col-12 mt-3">
-      <label class="form-label">Término do Curso</label>
+      <label class="form-label">Término Previsto</label>
       <div class="row g-2">
         <div class="col-md-4"><input type="text" class="form-control" name="dia_termino" placeholder="Dia" required></div>
         <div class="col-md-4">
@@ -103,6 +103,7 @@
     .then(res => res.json())
     .then(data => {
       alunos = data;
+
       const nomeInput = document.querySelector('input[name=nome_aluno]');
       const cpfInput = document.querySelector('input[name=cpf_aluno]');
       const emailInput = document.querySelector('input[name=email_aluno]');
@@ -110,24 +111,50 @@
       const endInput = document.querySelector('input[name=end_aluno]');
       const cursoInput = document.querySelector('select[name=curso]');
 
+      const suggestionBox = document.createElement('div');
+      suggestionBox.classList.add('list-group', 'position-absolute');
+      suggestionBox.style.zIndex = 1000;
+      suggestionBox.style.width = '100%';
+      nomeInput.parentElement.appendChild(suggestionBox);
+
       nomeInput.addEventListener('input', () => {
         const texto = nomeInput.value.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '');
-        const encontrado = alunos.find(a => a.nome.toLowerCase().includes(texto));
-        if (encontrado) {
-          nomeInput.value = encontrado.nome;
-          cpfInput.value = encontrado.cpf;
-          emailInput.value = encontrado.email;
-          telInput.value = encontrado.tel_aluno;
-          endInput.value = encontrado.endereco;
+        suggestionBox.innerHTML = '';
 
-          [...cursoInput.options].forEach(opt => {
-            if (opt.value.toLowerCase() === encontrado.curso.toLowerCase()) {
-              cursoInput.value = opt.value;
-            }
+        if (texto.length >= 3) {
+          const encontrados = alunos.filter(a => a.nome.toLowerCase().includes(texto));
+          encontrados.slice(0, 5).forEach(a => {
+            const item = document.createElement('button');
+            item.type = 'button';
+            item.className = 'list-group-item list-group-item-action';
+            item.textContent = a.nome;
+            item.onclick = () => {
+              nomeInput.value = a.nome;
+              cpfInput.value = a.cpf;
+              emailInput.value = a.email;
+              telInput.value = a.tel_aluno;
+              endInput.value = a.endereco;
+
+              [...cursoInput.options].forEach(opt => {
+                if (opt.value.toLowerCase() === a.curso.toLowerCase()) {
+                  cursoInput.value = opt.value;
+                }
+              });
+
+              suggestionBox.innerHTML = '';
+            };
+            suggestionBox.appendChild(item);
           });
+        }
+      });
+
+      document.addEventListener('click', e => {
+        if (!suggestionBox.contains(e.target) && e.target !== nomeInput) {
+          suggestionBox.innerHTML = '';
         }
       });
     });
 </script>
+
 </body>
 </html>
