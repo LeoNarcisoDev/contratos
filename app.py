@@ -246,6 +246,46 @@ def excluir_modelo(modelo_id):
     conn.close()
     return redirect('/modelos')
 
+@app.route('/alunos')
+def listar_alunos():
+    if 'usuario' not in session:
+        return redirect('/login')
+
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+    cur.execute('SELECT nome, cpf, email, tel_aluno, endereco, curso FROM alunos ORDER BY nome')
+    alunos = cur.fetchall()
+    conn.close()
+    return render_template('alunos.html', alunos=alunos)
+
+@app.route('/historico')
+def historico():
+    if 'usuario' not in session:
+        return redirect('/login')
+
+    filtro = request.args.get('filtro', '').lower().strip()
+    conn = sqlite3.connect(DB_PATH)
+    cur = conn.cursor()
+
+    if filtro:
+        cur.execute('''
+            SELECT nome_aluno, curso, forma_pagamento, data_criacao, modelo_utilizado
+            FROM contratos
+            WHERE lower(nome_aluno) LIKE ? OR lower(curso) LIKE ? OR lower(modelo_utilizado) LIKE ?
+            ORDER BY data_criacao DESC
+        ''', (f'%{filtro}%', f'%{filtro}%', f'%{filtro}%'))
+    else:
+        cur.execute('''
+            SELECT nome_aluno, curso, forma_pagamento, data_criacao, modelo_utilizado
+            FROM contratos
+            ORDER BY data_criacao DESC
+        ''')
+    contratos = cur.fetchall()
+    conn.close()
+    return render_template('historico.html', contratos=contratos)
+
+
+
 
 
 

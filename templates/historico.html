@@ -11,7 +11,7 @@
 
   <form method="GET" class="row mb-4">
     <div class="col-md-6">
-      <input type="text" name="filtro" class="form-control" placeholder="Buscar por aluno, curso ou modelo..." value="{{ request.args.get('filtro', '') }}">
+      <input type="text" name="filtro" class="form-control" placeholder="Buscar por aluno, curso ou modelo...">
     </div>
     <div class="col-md-3">
       <button type="submit" class="btn btn-outline-primary w-100">Filtrar</button>
@@ -20,10 +20,6 @@
       <a href="/historico" class="btn btn-outline-secondary w-100">Limpar Filtro</a>
     </div>
   </form>
-
-  <div class="mb-3 text-end">
-    <a href="/exportar_historico{% if request.args.get('filtro') %}?filtro={{ request.args.get('filtro') }}{% endif %}" class="btn btn-success">📁 Exportar CSV</a>
-  </div>
 
   <table class="table table-bordered table-striped">
     <thead class="table-dark">
