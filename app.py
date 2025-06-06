@@ -1,82 +1,35 @@
-from flask import Flask, render_template, request, redirect, send_file, session, url_for
+from flask import Flask, render_template, request, redirect, send_file
 from datetime import datetime
-import sqlite3
-import os
 import pandas as pd
 from unidecode import unidecode
 import json
 import shutil
-from werkzeug.security import generate_password_hash, check_password_hash
+import os
+import psycopg2
+from dotenv import load_dotenv
 
-from config import UPLOAD_FOLDER, DB_PATH
-from utils.db import init_db, get_modelos, get_cursos
+from config import DB_CONFIG, UPLOAD_FOLDER
+from utils.pg import get_pg_conn
 from utils.docx_handler import fill_contract
 
 app = Flask(__name__)
-app.secret_key = 'sua_chave_super_segura_aqui_987!@#Ideal'
-app.config['SESSION_COOKIE_SECURE'] = True
-app.config['SESSION_COOKIE_SAMESITE'] = 'None'
-app.config['SESSION_COOKIE_HTTPONLY'] = True
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 
 @app.route('/')
 def form():
-    if 'usuario' not in session:
-        return redirect('/login')
-    cursos = get_cursos()
-    modelos = get_modelos()
+    conn = get_pg_conn()
+    cur = conn.cursor()
+    cur.execute("SELECT nome FROM cursos ORDER BY nome ASC")
+    cursos = [row[0] for row in cur.fetchall()]
+    cur.execute("SELECT id, nome, descricao, categoria FROM modelos ORDER BY descricao")
+    modelos = cur.fetchall()
+    conn.close()
+
     if os.path.exists('data/alunos.json'):
         shutil.copyfile('data/alunos.json', 'static/alunos.json')
     return render_template('form.html', cursos=cursos, modelos=modelos)
 
-@app.route('/login', methods=['GET', 'POST'])
-def login():
-    erro = ''
-    if request.method == 'POST':
-        username = request.form.get('username')
-        senha = request.form.get('senha')
-        conn = sqlite3.connect(DB_PATH)
-        cur = conn.cursor()
-        cur.execute('SELECT senha FROM usuarios WHERE username = ?', (username,))
-        result = cur.fetchone()
-        conn.close()
-        if result and check_password_hash(result[0], senha):
-            session['usuario'] = username
-            return redirect('/')
-        else:
-            erro = 'Usuário ou senha inválidos.'
-    return render_template('login.html', erro=erro)
-
-@app.route('/logout')
-def logout():
-    session.pop('usuario', None)
-    return redirect('/login')
-
-@app.route('/cadastro_usuario', methods=['GET', 'POST'])
-def cadastro_usuario():
-    if session.get('usuario') != 'LeoNarciso':
-        return redirect('/login')
-    mensagem = ''
-    if request.method == 'POST':
-        novo_user = request.form.get('username').strip()
-        nova_senha = request.form.get('senha').strip()
-        if novo_user and nova_senha:
-            senha_hash = generate_password_hash(nova_senha)
-            conn = sqlite3.connect(DB_PATH)
-            cur = conn.cursor()
-            try:
-                cur.execute("INSERT INTO usuarios (username, senha) VALUES (?, ?)", (novo_user, senha_hash))
-                conn.commit()
-                mensagem = 'Usuário cadastrado com sucesso!'
-            except sqlite3.IntegrityError:
-                mensagem = 'Este nome de usuário já existe.'
-            conn.close()
-    return render_template('cadastro_usuario.html', mensagem=mensagem)
-
 @app.route('/submit_contract', methods=['POST'])
 def submit_contract():
-    if 'usuario' not in session:
-        return redirect('/login')
     hoje = datetime.today()
     meses = {
         '01': 'janeiro', '02': 'fevereiro', '03': 'março', '04': 'abril',
@@ -87,16 +40,18 @@ def submit_contract():
     mes = meses[hoje.strftime('%m')]
     ano = hoje.strftime('%Y')
     data_contrato_formatada = f'Belo Horizonte, {dia} de {mes} de {ano}'
+
     modelo = request.form.get('modelo', '')
     data = {key: request.form.get(key, '') for key in request.form}
     data['data_contrato'] = data_contrato_formatada
     data['contratante'] = data['nome_aluno']
     data['modelo'] = modelo
-    conn = sqlite3.connect(DB_PATH)
+
+    conn = get_pg_conn()
     cur = conn.cursor()
     cur.execute('''
         INSERT INTO contratos (nome_aluno, curso, forma_pagamento, data_criacao, modelo_utilizado)
-        VALUES (?, ?, ?, ?, ?)
+        VALUES (%s, %s, %s, %s, %s)
     ''', (
         data['nome_aluno'],
         data['curso'],
@@ -106,13 +61,12 @@ def submit_contract():
     ))
     conn.commit()
     conn.close()
+
     docx_path = fill_contract(data, modelo)
     return send_file(docx_path, as_attachment=True)
 
 @app.route('/alunos_csv', methods=['GET', 'POST'])
 def upload_alunos():
-    if 'usuario' not in session:
-        return redirect('/login')
     mensagem = ''
     if request.method == 'POST':
         arquivo = request.files.get('arquivo')
@@ -126,23 +80,23 @@ def upload_alunos():
                         'nome': unidecode(str(row.get('nome', ''))).strip(),
                         'cpf': str(row.get('cpf', '')).strip(),
                         'email': str(row.get('email', '')).strip(),
-                        'tel_aluno': str(
-                            (row.get('telefone') or row.get('telefones') or row.get('celular') or '')
-                        ).split('/')[0].strip(),
+                        'tel_aluno': str((row.get('telefone') or row.get('telefones') or row.get('celular') or '')).split('/')[0].strip(),
                         'endereco': str(row.get('endereco', '')).strip(),
                         'curso': str(row.get('produto', '')).strip()
                     }
                     alunos.append(aluno)
+
                 with open('data/alunos.json', 'w', encoding='utf-8') as f:
                     json.dump(alunos, f, ensure_ascii=False, indent=2)
-                conn = sqlite3.connect(DB_PATH)
+
+                conn = get_pg_conn()
                 cur = conn.cursor()
                 for aluno in alunos:
-                    cur.execute('SELECT id FROM alunos WHERE cpf = ?', (aluno['cpf'],))
+                    cur.execute('SELECT id FROM alunos WHERE cpf = %s', (aluno['cpf'],))
                     if not cur.fetchone():
                         cur.execute('''
                             INSERT INTO alunos (nome, cpf, email, tel_aluno, endereco, curso)
-                            VALUES (?, ?, ?, ?, ?, ?)
+                            VALUES (%s, %s, %s, %s, %s, %s)
                         ''', (aluno['nome'], aluno['cpf'], aluno['email'], aluno['tel_aluno'], aluno['endereco'], aluno['curso']))
                 conn.commit()
                 conn.close()
@@ -153,14 +107,8 @@ def upload_alunos():
             mensagem = 'Apenas arquivos CSV são aceitos.'
     return render_template('alunos_csv.html', mensagem=mensagem)
 
-# Demais rotas protegidas mantêm a mesma estrutura com `if 'usuario' not in session: return redirect('/login')`
-# Incluem: /modelos, /excluir_modelo, /cursos, /excluir_curso, /alunos, /historico, /exportar_historico
-
 @app.route('/modelos', methods=['GET', 'POST'])
 def gerenciar_modelos():
-    if 'usuario' not in session:
-        return redirect('/login')
-
     mensagem = ''
     if request.method == 'POST':
         arquivo = request.files.get('arquivo')
@@ -168,12 +116,12 @@ def gerenciar_modelos():
         categoria = request.form.get('categoria')
 
         if arquivo and arquivo.filename.endswith('.docx'):
-            caminho = os.path.join(app.config['UPLOAD_FOLDER'], arquivo.filename)
+            caminho = os.path.join(UPLOAD_FOLDER, arquivo.filename)
             arquivo.save(caminho)
 
-            conn = sqlite3.connect(DB_PATH)
+            conn = get_pg_conn()
             cur = conn.cursor()
-            cur.execute('INSERT INTO modelos (nome, descricao, categoria) VALUES (?, ?, ?)',
+            cur.execute('INSERT INTO modelos (nome, descricao, categoria) VALUES (%s, %s, %s)',
                         (arquivo.filename, descricao, categoria))
             conn.commit()
             conn.close()
@@ -181,7 +129,7 @@ def gerenciar_modelos():
         else:
             mensagem = 'Envie um arquivo .docx válido.'
 
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_pg_conn()
     cur = conn.cursor()
     cur.execute('SELECT id, nome, descricao, categoria FROM modelos ORDER BY descricao')
     modelos = cur.fetchall()
@@ -189,23 +137,38 @@ def gerenciar_modelos():
 
     return render_template('modelos.html', modelos=modelos, mensagem=mensagem)
 
+@app.route('/excluir_modelo/<int:modelo_id>')
+def excluir_modelo(modelo_id):
+    conn = get_pg_conn()
+    cur = conn.cursor()
+    cur.execute('SELECT nome FROM modelos WHERE id = %s', (modelo_id,))
+    resultado = cur.fetchone()
+
+    if resultado:
+        nome_arquivo = resultado[0]
+        caminho_arquivo = os.path.join(UPLOAD_FOLDER, nome_arquivo)
+        if os.path.exists(caminho_arquivo):
+            os.remove(caminho_arquivo)
+        cur.execute('DELETE FROM modelos WHERE id = %s', (modelo_id,))
+        conn.commit()
+
+    conn.close()
+    return redirect('/modelos')
+
 @app.route('/cursos', methods=['GET', 'POST'])
 def gerenciar_cursos():
-    if 'usuario' not in session:
-        return redirect('/login')
-
     mensagem = ''
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_pg_conn()
     cur = conn.cursor()
 
     if request.method == 'POST':
         novo = request.form.get('novo_curso', '').strip()
         if novo:
             try:
-                cur.execute('INSERT INTO cursos (nome) VALUES (?)', (novo,))
+                cur.execute('INSERT INTO cursos (nome) VALUES (%s)', (novo,))
                 conn.commit()
                 mensagem = 'Curso cadastrado com sucesso!'
-            except sqlite3.IntegrityError:
+            except psycopg2.IntegrityError:
                 mensagem = 'Este curso já está cadastrado.'
 
     cur.execute('SELECT id, nome FROM cursos ORDER BY nome')
@@ -215,82 +178,14 @@ def gerenciar_cursos():
 
 @app.route('/excluir_curso/<int:curso_id>')
 def excluir_curso(curso_id):
-    if 'usuario' not in session:
-        return redirect('/login')
-
-    conn = sqlite3.connect(DB_PATH)
+    conn = get_pg_conn()
     cur = conn.cursor()
-    cur.execute('DELETE FROM cursos WHERE id = ?', (curso_id,))
+    cur.execute('DELETE FROM cursos WHERE id = %s', (curso_id,))
     conn.commit()
     conn.close()
     return redirect('/cursos')
 
-@app.route('/excluir_modelo/<int:modelo_id>')
-def excluir_modelo(modelo_id):
-    if 'usuario' not in session:
-        return redirect('/login')
-
-    conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
-    cur.execute('SELECT nome FROM modelos WHERE id = ?', (modelo_id,))
-    resultado = cur.fetchone()
-
-    if resultado:
-        nome_arquivo = resultado[0]
-        caminho_arquivo = os.path.join(app.config['UPLOAD_FOLDER'], nome_arquivo)
-        if os.path.exists(caminho_arquivo):
-            os.remove(caminho_arquivo)
-        cur.execute('DELETE FROM modelos WHERE id = ?', (modelo_id,))
-        conn.commit()
-
-    conn.close()
-    return redirect('/modelos')
-
-@app.route('/alunos')
-def listar_alunos():
-    if 'usuario' not in session:
-        return redirect('/login')
-
-    conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
-    cur.execute('SELECT nome, cpf, email, tel_aluno, endereco, curso FROM alunos ORDER BY nome')
-    alunos = cur.fetchall()
-    conn.close()
-    return render_template('alunos.html', alunos=alunos)
-
-@app.route('/historico')
-def historico():
-    if 'usuario' not in session:
-        return redirect('/login')
-
-    filtro = request.args.get('filtro', '').lower().strip()
-    conn = sqlite3.connect(DB_PATH)
-    cur = conn.cursor()
-
-    if filtro:
-        cur.execute('''
-            SELECT nome_aluno, curso, forma_pagamento, data_criacao, modelo_utilizado
-            FROM contratos
-            WHERE lower(nome_aluno) LIKE ? OR lower(curso) LIKE ? OR lower(modelo_utilizado) LIKE ?
-            ORDER BY data_criacao DESC
-        ''', (f'%{filtro}%', f'%{filtro}%', f'%{filtro}%'))
-    else:
-        cur.execute('''
-            SELECT nome_aluno, curso, forma_pagamento, data_criacao, modelo_utilizado
-            FROM contratos
-            ORDER BY data_criacao DESC
-        ''')
-    contratos = cur.fetchall()
-    conn.close()
-    return render_template('historico.html', contratos=contratos)
-
-
-
-
-
-
-
-
 if __name__ == '__main__':
-    init_db()
+    from utils.pg import init_db_pg
+    init_db_pg()
     app.run(debug=True)
