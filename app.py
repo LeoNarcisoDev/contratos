@@ -13,7 +13,7 @@ from utils.pg import get_pg_conn
 from utils.docx_handler import fill_contract
 
 app = Flask(__name__)
-
+load_dotenv()
 @app.route('/')
 def form():
     conn = get_pg_conn()
