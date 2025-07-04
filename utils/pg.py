@@ -1,6 +1,5 @@
+# utils/pg.py
 import psycopg2
-import psycopg2.extras
-from werkzeug.security import generate_password_hash
 from config import DB_CONFIG
 
 def get_pg_conn():
@@ -53,20 +52,14 @@ def init_db_pg():
         )
     ''')
 
-    # Tabela de usuários
+    # Tabela de usuários com username
     cur.execute('''
         CREATE TABLE IF NOT EXISTS usuarios (
             id SERIAL PRIMARY KEY,
             username TEXT UNIQUE NOT NULL,
-            senha TEXT NOT NULL
+            senha_hash TEXT NOT NULL
         )
     ''')
-
-    # Cria admin padrão se não existir
-    cur.execute("SELECT * FROM usuarios WHERE username = 'LeoNarciso'")
-    if not cur.fetchone():
-        senha_hash = generate_password_hash('Crfmg19309@2025')
-        cur.execute("INSERT INTO usuarios (username, senha) VALUES (%s, %s)", ('LeoNarciso', senha_hash))
 
     conn.commit()
     conn.close()
