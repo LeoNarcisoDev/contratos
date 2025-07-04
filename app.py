@@ -135,22 +135,37 @@ def upload_alunos():
         if arquivo and arquivo.filename.endswith('.csv'):
             try:
                 df = pd.read_csv(arquivo, encoding='utf-8', sep=',')
-                df.columns = [col.strip().lower() for col in df.columns]
+
+                # Normaliza os nomes das colunas
+                df.columns = [col.strip().upper() for col in df.columns]
+
                 alunos = []
                 for _, row in df.iterrows():
+                    nome = str(row.get('NOME', '')).strip()
+                    cpf = str(row.get('CPF', '')).replace('.', '').replace('-', '').strip()
+                    email = str(row.get('EMAIL', '')).strip()
+                    telefone = str(row.get('TELEFONES', '')).split('//')[0].strip()
+                    endereco = str(row.get('ENDERECO', '')).strip()
+                    curso = str(row.get('PRODUTO', '')).strip()
+
+                    if not nome:
+                        continue  # pula registros sem nome
+
                     aluno = {
-                        'nome': unidecode(str(row.get('nome', ''))).strip(),
-                        'cpf': str(row.get('cpf', '')).strip(),
-                        'email': str(row.get('email', '')).strip(),
-                        'tel_aluno': str((row.get('telefone') or row.get('telefones') or row.get('celular') or '')).split('/')[0].strip(),
-                        'endereco': str(row.get('endereco', '')).strip(),
-                        'curso': str(row.get('produto', '')).strip()
+                        'nome': nome,
+                        'cpf': cpf,
+                        'email': email,
+                        'tel_aluno': telefone,
+                        'endereco': endereco,
+                        'curso': f"CURSO: {curso}"  # opcional, para padronizar com sistema
                     }
                     alunos.append(aluno)
 
+                # Salva JSON para autocomplete
                 with open('data/alunos.json', 'w', encoding='utf-8') as f:
                     json.dump(alunos, f, ensure_ascii=False, indent=2)
 
+                # Inserção no banco (opcional)
                 conn = get_pg_conn()
                 cur = conn.cursor()
                 for aluno in alunos:
@@ -162,6 +177,7 @@ def upload_alunos():
                         ''', (aluno['nome'], aluno['cpf'], aluno['email'], aluno['tel_aluno'], aluno['endereco'], aluno['curso']))
                 conn.commit()
                 conn.close()
+
                 mensagem = 'Alunos importados com sucesso!'
             except Exception as e:
                 mensagem = f'Erro no processamento: {str(e)}'

@@ -1,130 +1,250 @@
 [
   {
-    "nome": "Natalia Arcanjo Dias",
-    "cpf": "118.024.786-80",
-    "email": "nataliadias55@gmail.com",
-    "tel_aluno": "31973291622",
-    "endereco": "Rua Rua dos Carijós, 552 - Centro - Belo Horizonte - MG - CEP: 30120060",
-    "curso": "COD 2074 - PREPARATÓRIO CONTEÚDO BÁSICO NÍVEL SUPERIOR - PREFEITURA DE BELO HORIZONTE (PBH-SMS) - PRESENCIAL  - 2074"
+    "nome": "Luiza Odete Nascimento",
+    "cpf": "98814265615",
+    "email": "zailu2008@hotmail.com",
+    "tel_aluno": "3197790601",
+    "endereco": "Rua Rua Carlos Schettino, 338 - Gameleira - Belo Horizonte - MG - CEP: 30510270",
+    "curso": "CURSO: CÓD 2089 - CURSO PREPARATÓRIO SEEMG 2025 - PRESENCIAL - CÓD 2089"
   },
   {
-    "nome": "Soraia Cristina Barbosa",
-    "cpf": "040.580.366-48",
-    "email": "crissol23@yahoo.com.br",
-    "tel_aluno": "31984064600",
-    "endereco": "Rua Rua Modestino Gonçalves 238A - Bairro Nova Vista , 238 - Nova Vista  - Sabará  - MG - CEP: 31170100",
-    "curso": "COD 2074 - PREPARATÓRIO CONTEÚDO BÁSICO NÍVEL SUPERIOR - PREFEITURA DE BELO HORIZONTE (PBH-SMS) - PRESENCIAL  - 2074"
+    "nome": "Edilane Reink Martins",
+    "cpf": "01201146666",
+    "email": "edilane23@yahoo.com.br",
+    "tel_aluno": "31988849494",
+    "endereco": "Rua Rua Madalena, 950 - Bom Jesus - Belo Horizonte - MG - CEP: 31230640",
+    "curso": "CURSO: CÓD 2089 - CURSO PREPARATÓRIO SEEMG 2025 - PRESENCIAL - CÓD 2089"
   },
   {
-    "nome": "Barbara Stephanie de Sousa Camillo",
-    "cpf": "131.746.236-00",
-    "email": "barbaras.camillo@gmail.com",
-    "tel_aluno": "31971659791",
-    "endereco": "Rua Antônio José buffe , 35 - Felipe Cláudio de Sales  - Pedro Leopoldo  - MG - CEP: 33252034",
-    "curso": "COD 2074 - PREPARATÓRIO CONTEÚDO BÁSICO NÍVEL SUPERIOR - PREFEITURA DE BELO HORIZONTE (PBH-SMS) - PRESENCIAL  - 2074"
+    "nome": "Flávia Cristina Lages Vasconcellos",
+    "cpf": "62828827615",
+    "email": "flavialages@yahoo.com.br",
+    "tel_aluno": "31985139428",
+    "endereco": "Rua Avenida Professor Cândido Holanda, 70 - São Bento - Belo Horizonte - MG - CEP: 30350340",
+    "curso": "CURSO: CÓD 2089 - CURSO PREPARATÓRIO SEEMG 2025 - PRESENCIAL - CÓD 2089"
   },
   {
-    "nome": "Denise de Oliveira Firme",
-    "cpf": "009.479.136-88",
-    "email": "defirmepc@yahoo.com.br",
-    "tel_aluno": "3134444806",
-    "endereco": "Rua Trindade, 524 - Renascença - Belo Horizonte - MG - CEP: 31130560",
-    "curso": "COD 2074 - PREPARATÓRIO CONTEÚDO BÁSICO NÍVEL SUPERIOR - PREFEITURA DE BELO HORIZONTE (PBH-SMS) - PRESENCIAL  - 2074"
+    "nome": "Juliana Aparecida Silva Batista",
+    "cpf": "02761057619",
+    "email": "julianasilvabatista@yahoo.com.br",
+    "tel_aluno": "31996430965",
+    "endereco": "Rua Rua Vinte e Dois, 599 - Conjunto Nova Pampulha (Justinópolis) - Ribeirão das Neves - MG - CEP: 33937290",
+    "curso": "CURSO: CÓD 2089 - CURSO PREPARATÓRIO SEEMG 2025 - PRESENCIAL - CÓD 2089"
   },
   {
-    "nome": "Lorena Gomes Toledo",
-    "cpf": "075.486.116-33",
-    "email": "lorenagtoledo@hotmail.com",
-    "tel_aluno": "31992624500",
-    "endereco": "Rua Rua Francisco xeres, 23 - Vera cruz - Belo Horizonte  - MG - CEP: 30290110",
-    "curso": "COD 2074 - PREPARATÓRIO CONTEÚDO BÁSICO NÍVEL SUPERIOR - PREFEITURA DE BELO HORIZONTE (PBH-SMS) - PRESENCIAL  - 2074"
+    "nome": "Victor Dutra Balona Santos",
+    "cpf": "15200242665",
+    "email": "victorbalona@gmail.com",
+    "tel_aluno": "31984076766",
+    "endereco": "Rua Rua Donato da Fonseca, 208 - Coração de Jesus - Belo Horizonte - MG - CEP: 30380260",
+    "curso": "CURSO: CÓD 2089 - CURSO PREPARATÓRIO SEEMG 2025 - PRESENCIAL - CÓD 2089"
   },
   {
-    "nome": "Raiza Gomes de Campos",
-    "cpf": "084.098.556-82",
-    "email": "raizacampos@gmail.com",
-    "tel_aluno": "31999077276",
-    "endereco": "Rua Rua dos Guajajaras, 1268 - Santo Agostinho - Belo Horizonte - MG - CEP: 30180107",
-    "curso": "COD 2074 - PREPARATÓRIO CONTEÚDO BÁSICO NÍVEL SUPERIOR - PREFEITURA DE BELO HORIZONTE (PBH-SMS) - PRESENCIAL  - 2074"
+    "nome": "Sandro Ferrari Leite Ponciano Gomes",
+    "cpf": "01282213644",
+    "email": "sandroferrari1980@gmail.com",
+    "tel_aluno": "31973078283",
+    "endereco": "Rua Rua Astolfo Dutra, 934 - Pompéia - Belo Horizonte - MG - CEP: 30285280",
+    "curso": "CURSO: CÓD 2089 - CURSO PREPARATÓRIO SEEMG 2025 - PRESENCIAL - CÓD 2089"
   },
   {
-    "nome": "Veronica Aparecida de Lima Chaves",
-    "cpf": "132.793.426-43",
-    "email": "veronica_chaves@live.com",
-    "tel_aluno": "31975815434",
-    "endereco": "Rua Rua vinte e um de abril , 439 - Olhos d água  - Belo Horizonte  - MG - CEP: 30390450",
-    "curso": "COD 2074 - PREPARATÓRIO CONTEÚDO BÁSICO NÍVEL SUPERIOR - PREFEITURA DE BELO HORIZONTE (PBH-SMS) - PRESENCIAL  - 2074"
+    "nome": "ALEXANDRA DE SOUZA SOARES",
+    "cpf": "02676250655",
+    "email": "alexandrapedagogia75@gmail.com",
+    "tel_aluno": "31973078829",
+    "endereco": "Rua Rua Ada, 46 - Juliana - Belo Horizonte - MG - CEP: 31744576",
+    "curso": "CURSO: CÓD 2089 - CURSO PREPARATÓRIO SEEMG 2025 - PRESENCIAL - CÓD 2089"
   },
   {
-    "nome": "Aparecida Conceicao de Souza",
-    "cpf": "679.107.006-44",
-    "email": "aparecidasz321@gmail.com",
-    "tel_aluno": "31992763220",
-    "endereco": "Rua Rua Maria Rosa Alves, 96 - Promissão III - Lagoa Santa - MG - CEP: 33230380",
-    "curso": "COD 2074 - PREPARATÓRIO CONTEÚDO BÁSICO NÍVEL SUPERIOR - PREFEITURA DE BELO HORIZONTE (PBH-SMS) - PRESENCIAL  - 2074"
+    "nome": "Carolina Inês da Silveira",
+    "cpf": "06848471674",
+    "email": "carolina.carolbh@gmail.com",
+    "tel_aluno": "31992761116",
+    "endereco": "Rua Rua Patrocínio, 397 - Carlos Prates - Belo Horizonte - MG - CEP: 30710140",
+    "curso": "CURSO: CÓD 2089 - CURSO PREPARATÓRIO SEEMG 2025 - PRESENCIAL - CÓD 2089"
   },
   {
-    "nome": "Aglaia Dantas Carvalho",
-    "cpf": "988.819.735-53",
-    "email": "aglaiac@yahoo.com.br",
-    "tel_aluno": "21972946254",
-    "endereco": "Rua Rua Juiz de Fora, 1090 - Barro Preto - Belo Horizonte - MG - CEP: 30180060",
-    "curso": "COD 2074 - PREPARATÓRIO CONTEÚDO BÁSICO NÍVEL SUPERIOR - PREFEITURA DE BELO HORIZONTE (PBH-SMS) - PRESENCIAL  - 2074"
+    "nome": "BIMARA APARECIDA",
+    "cpf": "89225724691",
+    "email": "bars2904@yahoo.com.br",
+    "tel_aluno": "3125114330/31984902875/31984902875",
+    "endereco": "Rua Lindolfo de Azevedo - até 729/730, 95 - Nova Suíssa  - Belo Horizonte - MG - CEP: 30421265",
+    "curso": "CURSO: CÓD 2089 - CURSO PREPARATÓRIO SEEMG 2025 - PRESENCIAL - CÓD 2089"
   },
   {
-    "nome": "Regina Magalhaes dos Santos",
-    "cpf": "123.752.576-42",
-    "email": "reginamagsantos@gmail.com",
-    "tel_aluno": "31983699634",
-    "endereco": "Rua Rua Cambuí, 369 - Guarani - Belo Horizonte - MG - CEP: 31840120",
-    "curso": "COD 2074 - PREPARATÓRIO CONTEÚDO BÁSICO NÍVEL SUPERIOR - PREFEITURA DE BELO HORIZONTE (PBH-SMS) - PRESENCIAL  - 2074"
+    "nome": "Wellington ferreira Figueiredo",
+    "cpf": "05006659661",
+    "email": "domwell@live.com",
+    "tel_aluno": "31971380095",
+    "endereco": "Rua Rua Argentina, 2 - Esperança (Justinópolis) - Ribeirão das Neves - MG - CEP: 33913130",
+    "curso": "CURSO: CÓD 2089 - CURSO PREPARATÓRIO SEEMG 2025 - PRESENCIAL - CÓD 2089"
   },
   {
-    "nome": "Maria Eduarda Gontijo Goncalves Silva",
-    "cpf": "144.092.106-70",
-    "email": "dudagontijo2012@hotmail.com",
-    "tel_aluno": "37999927299",
-    "endereco": "Rua Rua Dom Aristides Porto, 95 - Coração Eucarístico - Belo Horizonte - MG - CEP: 30535450",
-    "curso": "COD 2074 - PREPARATÓRIO CONTEÚDO BÁSICO NÍVEL SUPERIOR - PREFEITURA DE BELO HORIZONTE (PBH-SMS) - PRESENCIAL  - 2074"
+    "nome": "Alexsandra da cunha Oliveira",
+    "cpf": "04234605603",
+    "email": "alexsandracunha23@gmail.com",
+    "tel_aluno": "31985327734",
+    "endereco": "Rua Rua Moressy, 18 - Icaivera - Betim - MG - CEP: 32611222",
+    "curso": "CURSO: CÓD 2089 - CURSO PREPARATÓRIO SEEMG 2025 - PRESENCIAL - CÓD 2089"
   },
   {
-    "nome": "Sarah da Silva Almeida Magalhaes",
-    "cpf": "105.348.676-69",
-    "email": "sarahmagalhaes1096@gmail.com",
-    "tel_aluno": "31994303487",
-    "endereco": "Rua Rua Teixeira Soares, 970 - Santa Tereza - Belo Horizonte - MG - CEP: 31015040",
-    "curso": "COD 2074 - PREPARATÓRIO CONTEÚDO BÁSICO NÍVEL SUPERIOR - PREFEITURA DE BELO HORIZONTE (PBH-SMS) - PRESENCIAL  - 2074"
+    "nome": "Amanda Dafne de medeiro",
+    "cpf": "05907041684",
+    "email": "dafne.amanda@hotmail.com",
+    "tel_aluno": "31993599167",
+    "endereco": "Rua Avenida João Rolla Filho, 14 - Diamante (Barreiro) - Belo Horizonte - MG - CEP: 30627230",
+    "curso": "CURSO: CÓD 2089 - CURSO PREPARATÓRIO SEEMG 2025 - PRESENCIAL - CÓD 2089"
   },
   {
-    "nome": "Ellen Barbosa de Brito",
-    "cpf": "015.314.586-29",
-    "email": "ellen.brito2011@yahoo.com.br",
-    "tel_aluno": "31998306218",
-    "endereco": "Rua Rua Gavião, 165 - Flávio Marques Lisboa (Barreiro) - Belo Horizonte - MG - CEP: 30624380",
-    "curso": "COD 2074 - PREPARATÓRIO CONTEÚDO BÁSICO NÍVEL SUPERIOR - PREFEITURA DE BELO HORIZONTE (PBH-SMS) - PRESENCIAL  - 2074"
+    "nome": "Nardeli Braga",
+    "cpf": "02730067620",
+    "email": "nardelisouzabraga@hotmail.com",
+    "tel_aluno": "31999066284",
+    "endereco": "Rua Rua Tapirapes, 135 - Santa Mônica - BELO HORIZONTE - MG - CEP: 31530080",
+    "curso": "CURSO: CÓD 2089 - CURSO PREPARATÓRIO SEEMG 2025 - PRESENCIAL - CÓD 2089"
   },
   {
-    "nome": "Waslewska Almeida Paulino",
-    "cpf": "029.030.786-45",
-    "email": "waslewska@hotmail.com",
-    "tel_aluno": "31993700334",
-    "endereco": "Rua Rua Montalvânia, 126 - Santa Inês - Belo Horizonte - MG - CEP: 31080090",
-    "curso": "COD 2074 - PREPARATÓRIO CONTEÚDO BÁSICO NÍVEL SUPERIOR - PREFEITURA DE BELO HORIZONTE (PBH-SMS) - PRESENCIAL  - 2074"
+    "nome": "Elenisse Aparecida de Miranda",
+    "cpf": "76446476604",
+    "email": "elenissemiranda@yahoo.com.br",
+    "tel_aluno": "31983658982",
+    "endereco": "Rua Rua Acácias, 2015 - Eldorado - Contagem - MG - CEP: 32310370",
+    "curso": "CURSO: CÓD 2089 - CURSO PREPARATÓRIO SEEMG 2025 - PRESENCIAL - CÓD 2089"
   },
   {
-    "nome": "Priscylla Guedes",
-    "cpf": "065.277.024-00",
-    "email": "priscyllaguedes@gmail.com",
-    "tel_aluno": "31975102508",
-    "endereco": "Rua Rua Begônia, 550 - Esplanada - Belo Horizonte - MG - CEP: 30280160",
-    "curso": "COD 2074 - PREPARATÓRIO CONTEÚDO BÁSICO NÍVEL SUPERIOR - PREFEITURA DE BELO HORIZONTE (PBH-SMS) - PRESENCIAL  - 2074"
+    "nome": "Karina Ramos Martins Gandra",
+    "cpf": "05386580612",
+    "email": "kramosmartins@yahoo.com.br",
+    "tel_aluno": "31988210003",
+    "endereco": "Rua Rua Cuco , 355 - Goiânia  - Belo Horizonte  - MG - CEP: 31950430",
+    "curso": "CURSO: CÓD 2089 - CURSO PREPARATÓRIO SEEMG 2025 - PRESENCIAL - CÓD 2089"
   },
   {
-    "nome": "Rogerio Vieira Caldeira",
-    "cpf": "550.934.776-72",
-    "email": "rocall321@gmail.com",
-    "tel_aluno": "3125125129",
-    "endereco": "Rua Rua Bernardo Guimarães, 2717 - Santo Agostinho - Belo Horizonte - MG - CEP: 30140085",
-    "curso": "COD 2074 - PREPARATÓRIO CONTEÚDO BÁSICO NÍVEL SUPERIOR - PREFEITURA DE BELO HORIZONTE (PBH-SMS) - PRESENCIAL  - 2074"
+    "nome": "GRINALVA FERREIR ALVES MEDEIROS",
+    "cpf": "03884300601",
+    "email": "felixferreira450@gmail.com",
+    "tel_aluno": "31983298245",
+    "endereco": "Rua Rua Tingui, 328 - Tirol (Barreiro) - Belo Horizonte - MG - CEP: 30662408",
+    "curso": "CURSO: CÓD 2089 - CURSO PREPARATÓRIO SEEMG 2025 - PRESENCIAL - CÓD 2089"
+  },
+  {
+    "nome": "Kátia de Cassia Miranda",
+    "cpf": "02723293637",
+    "email": "arteskatia@yahoo.com.br",
+    "tel_aluno": "31992707349",
+    "endereco": "Rua Rua Doutor José Ferolla, 30 - Planalto - Belo Horizonte - MG - CEP: 31730680",
+    "curso": "CURSO: CÓD 2089 - CURSO PREPARATÓRIO SEEMG 2025 - PRESENCIAL - CÓD 2089"
+  },
+  {
+    "nome": "Raquel Cristina Rodrigues",
+    "cpf": "04373358605",
+    "email": "quelrodrigues2020@gmail.com",
+    "tel_aluno": "31975794040",
+    "endereco": "Rua Rua Saragoça, 128 - Europa - Belo Horizonte - MG - CEP: 31620450",
+    "curso": "CURSO: CÓD 2089 - CURSO PREPARATÓRIO SEEMG 2025 - PRESENCIAL - CÓD 2089"
+  },
+  {
+    "nome": "Fagner gulharte Ferreira",
+    "cpf": "07966982602",
+    "email": "fagnergulharte@gmail.com",
+    "tel_aluno": "31983708832",
+    "endereco": "Rua Rua Rio Trici, 51 - Copacabana - Belo Horizonte - MG - CEP: 31550490",
+    "curso": "CURSO: CÓD 2089 - CURSO PREPARATÓRIO SEEMG 2025 - PRESENCIAL - CÓD 2089"
+  },
+  {
+    "nome": "JOSE MANOEL DE JESUS RIBEIRO",
+    "cpf": "00003562638",
+    "email": "manuelfilos@yahoo.com.br",
+    "tel_aluno": "31994609350",
+    "endereco": "Rua Avenida Basílio da Gama, 875 - Tupi B - Belo Horizonte - MG - CEP: 31842610",
+    "curso": "CURSO: CÓD 2089 - CURSO PREPARATÓRIO SEEMG 2025 - PRESENCIAL - CÓD 2089"
+  },
+  {
+    "nome": "GUSTAVO FAUSTINO RIBEIRO",
+    "cpf": "07227830608",
+    "email": "ribeiro1984@bol.com.br",
+    "tel_aluno": "31971856124/31971856124/31971856124",
+    "endereco": "Rua Rua Christiano Martins da Silva, 111 - Petrópolis (Barreiro) - Belo Horizonte - MG - CEP: 30666547",
+    "curso": "CURSO: CÓD 2089 - CURSO PREPARATÓRIO SEEMG 2025 - PRESENCIAL - CÓD 2089"
+  },
+  {
+    "nome": "Cirlene de Jesus Oliveira",
+    "cpf": "04376499625",
+    "email": "cirlenex@yahoo.com.br",
+    "tel_aluno": "32982657754",
+    "endereco": "Rua Rua do Cercado, 136 - São João Batista (Venda Nova) - Belo Horizonte - MG - CEP: 31510405",
+    "curso": "CURSO: CÓD 2089 - CURSO PREPARATÓRIO SEEMG 2025 - PRESENCIAL - CÓD 2089"
+  },
+  {
+    "nome": "Graziele Azevedo Rodrigues",
+    "cpf": "09915423632",
+    "email": "grazieleazevedo2010@gmail.com",
+    "tel_aluno": "31993699442",
+    "endereco": "Rua Rua Pacífico Cardoso de Andrade, 72 - Independência (Barreiro) - Belo Horizonte - MG - CEP: 30672754",
+    "curso": "CURSO: CÓD 2089 - CURSO PREPARATÓRIO SEEMG 2025 - PRESENCIAL - CÓD 2089"
+  },
+  {
+    "nome": "Márcio de Sousa Meneses",
+    "cpf": "02876759632",
+    "email": "kinhodiv67@gmail.com",
+    "tel_aluno": "31973326701",
+    "endereco": "Rua Rua Christina Maria Assis, 613 - Califórnia - Belo Horizonte - MG - CEP: 30855440",
+    "curso": "CURSO: CÓD 2089 - CURSO PREPARATÓRIO SEEMG 2025 - PRESENCIAL - CÓD 2089"
+  },
+  {
+    "nome": "Janaína Freitas dos Reis",
+    "cpf": "98921452672",
+    "email": "janainafr@gmail.com",
+    "tel_aluno": "3130875017/31975701299/31993397653",
+    "endereco": "Rua Rua Nhanduti, 107 - Caiçara-Adelaide - Belo Horizonte - MG - CEP: 30770370",
+    "curso": "CURSO: CÓD 2089 - CURSO PREPARATÓRIO SEEMG 2025 - PRESENCIAL - CÓD 2089"
+  },
+  {
+    "nome": "Camila da Silva Medeiro Morais",
+    "cpf": "09050579612",
+    "email": "cmedeiro.morais@gmail.com",
+    "tel_aluno": "31984144733",
+    "endereco": "Rua Rua Três, 49 - Riacho das Pedras - Contagem - MG - CEP: 32280640",
+    "curso": "CURSO: CÓD 2089 - CURSO PREPARATÓRIO SEEMG 2025 - PRESENCIAL - CÓD 2089"
+  },
+  {
+    "nome": "Ângela do Rosário dos Santos",
+    "cpf": "03429276632",
+    "email": "angelasantos.as86@gmail.com",
+    "tel_aluno": "31995149896",
+    "endereco": "Rua Rua B Um, 165 - Betânia - Belo Horizonte - MG - CEP: 30580492",
+    "curso": "CURSO: CÓD 2089 - CURSO PREPARATÓRIO SEEMG 2025 - PRESENCIAL - CÓD 2089"
+  },
+  {
+    "nome": "Richard Mota de Sousa",
+    "cpf": "74271130630",
+    "email": "motarichard@hotmail.com",
+    "tel_aluno": "31995471170",
+    "endereco": "Rua Rua Antônio Pereira Mota, 78 - Conjunto Habitacional Vale do Jatobá (Barreiro) - Belo Horizonte - MG - CEP: 30666080",
+    "curso": "CURSO: CÓD 2089 - CURSO PREPARATÓRIO SEEMG 2025 - PRESENCIAL - CÓD 2089"
+  },
+  {
+    "nome": "Valquíria Borges",
+    "cpf": "03549287674",
+    "email": "valquiriaborges34@gmail.com",
+    "tel_aluno": "31985334642",
+    "endereco": "Rua Rua A, 73 - Vila Salica - Itabira - MG - CEP: 35900775",
+    "curso": "CURSO: CÓD 2089 - CURSO PREPARATÓRIO SEEMG 2025 - PRESENCIAL - CÓD 2089"
+  },
+  {
+    "nome": "Valquíria Cristina Cruz Bicalho",
+    "cpf": "00686596609",
+    "email": "valquiriabicalho@yahoo.com.br",
+    "tel_aluno": "31981198902",
+    "endereco": "Rua Rua Paulo Nunes Vieira, 53 - Cidade Nova - Belo Horizonte - MG - CEP: 31170050",
+    "curso": "CURSO: CÓD 2089 - CURSO PREPARATÓRIO SEEMG 2025 - PRESENCIAL - CÓD 2089"
+  },
+  {
+    "nome": "Maria José Alves Pereira",
+    "cpf": "03230753631",
+    "email": "mariajap75@gmail.com",
+    "tel_aluno": "31987073560",
+    "endereco": "Rua Rua Maria do Rosário Pimenta Machado, 225 - Liberdade - Santa Luzia - MG - CEP: 33170818",
+    "curso": "CURSO: CÓD 2089 - CURSO PREPARATÓRIO SEEMG 2025 - PRESENCIAL - CÓD 2089"
   }
 ]
